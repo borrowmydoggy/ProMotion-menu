@@ -15,7 +15,7 @@ Motion::Project::App.setup do |app|
 
   # For compatibility with libraries that set detect_dependencies to false
   app.files_dependencies({
-    "#{core_lib}/drawer.rb" => [ "#{core_lib}/visibility.rb", "#{core_lib}/gestures.rb" ],
+    "#{core_lib}/drawer.rb" => [ "#{core_lib}/visibility.rb" ],
     "#{core_lib}/delegate.rb" => [ "#{core_lib}/drawer.rb" ],
   })
   
