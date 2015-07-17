@@ -1,48 +1,51 @@
 module ProMotion
   module Menu
-    class Drawer < MMDrawerController
+    class Drawer < LGSideMenuController
       include ::ProMotion::ScreenModule
-      include Gestures
       include Visibility
-      include Transition
 
-      def self.new(center=nil, options={})
-        menu = alloc.init
+      attr_accessor :leftViewController, :rightViewController, :centerViewController
+
+      def self.new(center, options={})
+        mp center
+        mp center.navigationController
+        menu = alloc.initWithRootViewController(center.navigationController)
+        mp menu
         menu.send(:auto_setup, center, options)
+        menu.prepare_screens
         menu
       end
 
       def auto_setup(center, options={})
-        options[:to_show] ||= :pan_bezel
-        options[:to_hide] ||= [:pan_center, :tap_center]
         options[:center] ||= center if center
-        shadow = options[:shadow] unless options[:shadow].nil?
         set_attributes self, options
-        self.send(:setup) if self.respond_to?(:setup)
+        self.send(:setupDefaults) if self.respond_to?(:setupDefaults)
+      end
+
+      def prepare_screens
+        self.setLeftViewEnabledWithWidth(250.0, presentationStyle:LGSideMenuPresentationStyleSlideAbove, alwaysVisibleOptions:0)
+
+        self.leftViewBackgroundColor = UIColor.colorWithWhite(1.0, alpha:0.9)
+
+        self.leftView.addSubview(self.leftViewController.view)
+
       end
 
       def left_controller=(c)
-        self.leftDrawerViewController = prepare_controller_for_pm(c)
+        self.leftViewController = prepare_controller_for_pm(c)
       end
       alias_method :left=, :left_controller=
 
       def left_controller
-        self.leftDrawerViewController
+        self.leftViewController
       end
       alias_method :left, :left_controller
 
-      def right_controller=(c)
-        self.rightDrawerViewController = prepare_controller_for_pm(c)
-      end
-      alias_method :right=, :right_controller=
-
-      def right_controller
-        self.rightDrawerViewController
-      end
-      alias_method :right, :right_controller
-
       def center_controller=(c)
         self.centerViewController = prepare_controller_for_pm(c)
+        mp self.centerViewController
+        self.centerViewController
+        open self.centerViewController
       end
       alias_method :content_controller=, :center_controller=
       alias_method :center=, :center_controller=
@@ -55,25 +58,14 @@ module ProMotion
       alias_method :center, :center_controller
       alias_method :content, :center_controller
 
-      def controller=(side={})
-        self.left_controller = side[:left] if side[:left]
-        self.right_controller = side[:right] if side[:right]
-        self.center_controller = side[:center] if side[:center]
-        self.center_controller ||= side[:content] if side[:content]
-      end
-      alias_method :controllers=, :controller=
-
-      def controller(side)
-        return self.left_controller if side == :left
-        return self.right_controller if side == :right
-        self.center_controller if [:content, :center].include?(side)
+      def leftViewWillLayoutSubviewsWithSize(size)
+        super
+        self.leftViewController.view.autoresizesSubviews = true
+        self.leftViewController.view.frame = CGRectMake(0.0 , 0.0, size.width, size.height)
+        self.leftViewController.view.layer.masksToBounds = true
       end
 
-      def shadow=(show_shadow)
-        self.setShowsShadow(show_shadow)
-      end
-
-    protected
+      protected
 
       def prepare_controller_for_pm(controller)
         unless controller.nil?

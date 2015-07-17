@@ -20,7 +20,7 @@ Motion::Project::App.setup do |app|
   })
   
   app.pods do
-    pod 'MMDrawerController', '~> 0.5'
+    pod 'LGSideMenuController', '~> 1.0.0'
   end
 end
 

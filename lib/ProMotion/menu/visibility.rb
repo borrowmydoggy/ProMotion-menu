@@ -7,7 +7,7 @@ module ProMotion; module Menu
     end
 
     def show_left(animated=true)
-      openDrawerSide MMDrawerSideLeft, animated: animated, completion: default_completion_block
+      self.showLeftViewAnimated(animated, completionHandler:nil)
     end
 
     def show_right(animated=true)
@@ -15,7 +15,7 @@ module ProMotion; module Menu
     end
 
     def hide(animated=true)
-      closeDrawerAnimated animated, completion: default_completion_block
+      self.hideLeftViewAnimated(animated, completionHandler:nil)
     end
 
     def toggle(side, animated=true)
@@ -24,21 +24,11 @@ module ProMotion; module Menu
     end
 
     def toggle_left(animated=true)
-      toggleDrawerSide MMDrawerSideLeft, animated: animated, completion: default_completion_block
+      show_left(animated)
     end
 
     def toggle_right(animated=true)
-      toggleDrawerSide MMDrawerSideRight, animated: animated, completion: default_completion_block
-    end
-
-    def self.included(base)
-      base.class_eval do
-        alias_method :max_left_width, :maximumLeftDrawerWidth
-        alias_method :max_right_width, :maximumRightDrawerWidth
-
-        alias_method :max_left_width=, :setMaximumLeftDrawerWidth
-        alias_method :max_right_width=, :setMaximumRightDrawerWidth
-      end
+      show_right(animated)
     end
 
   end
