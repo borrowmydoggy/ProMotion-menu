@@ -7,10 +7,7 @@ module ProMotion
       attr_accessor :leftViewController, :rightViewController, :centerViewController
 
       def self.new(center, options={})
-        mp center
-        mp center.navigationController
         menu = alloc.initWithRootViewController(center.navigationController)
-        mp menu
         menu.send(:auto_setup, center, options)
         menu.prepare_screens
         menu
@@ -43,7 +40,6 @@ module ProMotion
 
       def center_controller=(c)
         self.centerViewController = prepare_controller_for_pm(c)
-        mp self.centerViewController
         self.centerViewController
         open self.centerViewController
       end
