@@ -23,6 +23,7 @@ module ProMotion
         self.setLeftViewEnabledWithWidth(250.0, presentationStyle:LGSideMenuPresentationStyleSlideAbove, alwaysVisibleOptions:0)
 
         self.leftViewBackgroundColor = UIColor.colorWithWhite(1.0, alpha:0.9)
+        self.leftViewSwipeGestureEnabled = false
 
         self.leftView.addSubview(self.leftViewController.view)
 
