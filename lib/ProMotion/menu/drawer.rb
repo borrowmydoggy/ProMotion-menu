@@ -26,7 +26,6 @@ module ProMotion
 
         self.leftView.addSubview(self.leftViewController.view)
         self.leftViewSwipeGestureEnabled = false
-        self.leftViewGestureEnabled = false
       end
 
       def left_controller=(c)
