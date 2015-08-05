@@ -4,7 +4,10 @@ module ProMotion
       include ::ProMotion::ScreenModule
       include Visibility
 
-      attr_accessor :leftViewController, :rightViewController, :centerViewController
+      DEFAULT_WIDTH = 250
+
+      attr_accessor :leftViewController, :rightViewController, :centerViewController,
+        :width
 
       def self.new(center, options={})
         menu = alloc.initWithRootViewController(center.navigationController)
@@ -20,7 +23,7 @@ module ProMotion
       end
 
       def prepare_screens
-        self.setLeftViewEnabledWithWidth(250.0, presentationStyle:LGSideMenuPresentationStyleSlideAbove, alwaysVisibleOptions:0)
+        self.setLeftViewEnabledWithWidth(width || DEFAULT_WIDTH, presentationStyle:LGSideMenuPresentationStyleSlideAbove, alwaysVisibleOptions:0)
 
         self.leftViewBackgroundColor = UIColor.colorWithWhite(1.0, alpha:0.9)
 
